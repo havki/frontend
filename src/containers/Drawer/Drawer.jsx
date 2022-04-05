@@ -18,9 +18,11 @@ import Typography from "@mui/material/Typography";
 import { NavLink, Outlet } from "react-router-dom";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
+import LoginIcon from '@mui/icons-material/Login';
 import { useDispatch, useSelector } from "react-redux";
 import { filterCat } from "../../store/reducers/recipes.reducer";
 import { recipesFetch } from "../../store/reducers/recipes.reducer";
+import { textAlign } from "@mui/system";
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
@@ -40,7 +42,7 @@ function ResponsiveDrawer(props) {
   }
 
   const {category} = useSelector((state)=> state.recipes)
-  const {user} = useSelector((state)=> state.users)
+  const {user} = useSelector((state)=> state.auth)
 
   const drawer = (
     <div>
@@ -112,6 +114,15 @@ function ResponsiveDrawer(props) {
               to={"/recipes"}
             >
               <SoupKitchenIcon /> All
+            </NavLink>
+            <NavLink
+              style={{ textDecoration: "none", color: "white",marginLeft: "50px", }}
+              className={({ isActive }) =>
+                isActive ? "bg-green-500 font-bold" : "bg-red-500 font-thin"
+              }
+              to={"/login"}
+            >
+              <LoginIcon/> Log In
             </NavLink>
           </Typography>
         </Toolbar>

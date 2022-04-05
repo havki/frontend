@@ -7,19 +7,25 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import axios from "../../api/axios.info";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addRecipe, recipesPost,categoriesFetch } from "../../store/reducers/recipes.reducer";
+import {
+  addRecipe,
+  recipesPost,
+  categoriesFetch,
+} from "../../store/reducers/recipes.reducer";
 import Loading from "../UI/Loading";
 
 function AddRecipe() {
   const [recipe, setRecipe] = useState({});
-  const [currency, setCurrency] = React.useState('');
+
+  const [file, setFile] = useState(null);
+  const [currency, setCurrency] = React.useState("");
   const dispatch = useDispatch();
   const { loading, category } = useSelector((state) => state.recipes);
+  const token = useSelector((state) => state.auth.user.token )
 
-  
-  
   const changeHandler = (e) => {
     setRecipe((recipe) => {
       return {
@@ -29,12 +35,33 @@ function AddRecipe() {
     });
   };
 
-  
   const submitHandler = async (e) => {
     e.preventDefault();
-    let obj = { data: { ...recipe } };
+
+    const formData = new FormData();
+    formData.append("files", file);
+
+    axios.post("/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", //&&&&&&&&&&&&????????????????
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      const obj = {
+        data: {
+          ...recipe,
+          image: res.data,
+        },
+      };
+      dispatch(recipesPost(obj));
+    });
+
+   
     dispatch(addRecipe(recipe));
-    dispatch(recipesPost(obj));
+  };
+
+  const fileHandler = (e) => {
+    setFile(e.target.files[0]);
   };
 
   return (
@@ -62,10 +89,8 @@ function AddRecipe() {
               label="Категория"
               name="kategorii"
               onChange={changeHandler}
-              
-              value= {currency}
+              value={currency}
             >
-              
               {category.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.attributes.title}
@@ -101,9 +126,15 @@ function AddRecipe() {
               id="outlined-basic"
             />
             <TextField
+              onChange={fileHandler}
+              name="file"
+              type="file"
+              id="outlined-basic"
+            />
+            <TextField
               onChange={changeHandler}
               name="text"
-              minRows={5}
+              minRows={2}
               id="outlined-textarea"
               label="Подробное описание"
               multiline

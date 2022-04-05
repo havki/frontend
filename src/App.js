@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AddRecipe from "./containers/AddRecipe/AddRecipe";
 import Layout from "./containers/Layout/Layout";
+import Login from "./containers/Login/Login";
 import ProtectedRoute from "./containers/ProtectedRoute/ProtectedRoute";
 import Recipes from "./containers/Recipes/Recipes";
 import { categoriesFetch } from "./store/reducers/recipes.reducer";
@@ -16,13 +17,14 @@ function App() {
     dispatch(categoriesFetch());
   }, [dispatch]);
   
-  const{user}=useSelector((state)=> state.users )
+  const{user}=useSelector((state)=> state.auth )
 
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="recipes" element={<Recipes />}/>
+          <Route path="login" element={<Login/>}/>
           <Route path="addrecipe" element={
             <ProtectedRoute user={user}>
               <AddRecipe/>

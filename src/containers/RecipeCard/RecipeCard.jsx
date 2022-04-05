@@ -19,7 +19,7 @@ export default function MediaCard({
 let baseUrl= 'http://localhost:1337/'
   // `http://localhost:1337/${image.data.attributes.url}`
   
-  console.log(image);
+  
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia

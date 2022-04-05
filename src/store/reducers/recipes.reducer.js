@@ -3,9 +3,14 @@ import axios from "../../api/axios.info";
 
 export const recipesPost = createAsyncThunk(
   "recipes/post",
-  async (order, { rejectWithValue }) => {
+  async (order, { rejectWithValue,getState }) => {
     try {
-      await axios.post("/recipes", order);
+      let token =  getState().auth.user.token
+      await axios.post("/recipes", order, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      });
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -30,9 +35,10 @@ export const categoriesFetch = createAsyncThunk(
 
 export const recipesFetch = createAsyncThunk(
   "recipes/fetch",
-  async (id, { rejectWithValue, dispatch }) => {
+  async (id, { rejectWithValue,}) => {
    
     try {
+      
       const res = await axios.get(`/categories/${id}?populate[reczepties][populate]=image`);
       if (!res?.data) {
         throw new Error();
@@ -84,9 +90,7 @@ export const recipesSlice = createSlice({
       state.loading = "complete";
       state.recipes = action.payload.data.attributes.reczepties.data.map((recipe) => {
         let resp = recipe.attributes;
-        console.log('====================================');
-        console.log(resp);
-        console.log('====================================');
+        
         return resp;
       });
     },
