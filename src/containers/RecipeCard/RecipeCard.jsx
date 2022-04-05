@@ -25,7 +25,7 @@ let baseUrl= 'http://localhost:1337/'
       <CardMedia
         component="img"
         height="140"
-        image={image ? (`${ image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
+        image={image.data ? (`${ image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
         alt="green iguana"
       />
       <CardContent>

@@ -31,8 +31,9 @@ export const categoriesFetch = createAsyncThunk(
 export const recipesFetch = createAsyncThunk(
   "recipes/fetch",
   async (id, { rejectWithValue, dispatch }) => {
+   
     try {
-      const res = await axios.get(`/recipes?populate=image`);
+      const res = await axios.get(`/categories/${id}?populate[reczepties][populate]=image`);
       if (!res?.data) {
         throw new Error();
       }
@@ -81,8 +82,11 @@ export const recipesSlice = createSlice({
     [recipesFetch.fulfilled]: (state, action) => {
       
       state.loading = "complete";
-      state.recipes = action.payload.data.map((recipe) => {
+      state.recipes = action.payload.data.attributes.reczepties.data.map((recipe) => {
         let resp = recipe.attributes;
+        console.log('====================================');
+        console.log(resp);
+        console.log('====================================');
         return resp;
       });
     },

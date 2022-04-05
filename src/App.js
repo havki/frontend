@@ -1,5 +1,6 @@
+
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AddRecipe from "./containers/AddRecipe/AddRecipe";
@@ -14,15 +15,20 @@ function App() {
   useEffect(() => {
     dispatch(categoriesFetch());
   }, [dispatch]);
+  
+  const{user}=useSelector((state)=> state.users )
 
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="recipes" element={<Recipes />}></Route>
-          <ProtectedRoute>
-            <Route path="addrecipe" element={<AddRecipe />}></Route>
-          </ProtectedRoute>
+          <Route path="recipes" element={<Recipes />}/>
+          <Route path="addrecipe" element={
+            <ProtectedRoute user={user}>
+              <AddRecipe/>
+            </ProtectedRoute>
+          }/>
+          
         </Route>
       </Routes>
     </div>

@@ -40,6 +40,7 @@ function ResponsiveDrawer(props) {
   }
 
   const {category} = useSelector((state)=> state.recipes)
+  const {user} = useSelector((state)=> state.users)
 
   const drawer = (
     <div>
@@ -48,7 +49,7 @@ function ResponsiveDrawer(props) {
       <List>
         {category && category.map((text, index) => (
          
-          <ListItem button onClick={()=>filter(index)}  key={text.id}>
+          <ListItem button onClick={()=>filter(text.id)}  key={text.id}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
@@ -94,15 +95,16 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" >
-            <NavLink
+            
+            {user && <NavLink
               style={{ textDecoration: "none", color: "white" }}
               className="link"
               to={"/addrecipe"}
             >
              <AddBoxIcon/> Add
             </NavLink>
+            }
             <NavLink
-
               style={{ textDecoration: "none", color: "white",marginLeft: "50px" }}
               className={({ isActive }) =>
                 isActive ? "bg-green-500 font-bold" : "bg-red-500 font-thin"
