@@ -9,6 +9,9 @@ import Login from "./containers/Login/Login";
 import ProtectedRoute from "./containers/ProtectedRoute/ProtectedRoute";
 import Recipes from "./containers/Recipes/Recipes";
 import { categoriesFetch } from "./store/reducers/recipes.reducer";
+import cookie from "cookie";
+import { addCookie } from "./store/reducers/auth.reducer";
+
 
 
 function App() {
@@ -18,6 +21,9 @@ function App() {
   }, [dispatch]);
   
   const{user}=useSelector((state)=> state.auth )
+
+  
+
 
   return (
     <div className="App">

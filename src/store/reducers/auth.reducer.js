@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../api/axios.info";
 
+
 export const fetchLogin = createAsyncThunk(
   "auth/login",
   async (user, { rejectWithValue }) => {
     
     try {
       const res = await axios.post("/auth/local", user);
-      console.log(res.data);
+      
       if (!res.data) {
         throw new Error()
       }
@@ -21,7 +22,12 @@ export const fetchLogin = createAsyncThunk(
 export  const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user:{},
+    user:null,
+  },
+  reducers: {
+    addCookie: (state,action)=>{
+      state.user = action.payload
+    }
   },
   extraReducers: {
     [fetchLogin.pending] : (state) => {
@@ -42,6 +48,6 @@ export  const authSlice = createSlice({
     }
   },
 });
-export const {} = authSlice.actions;
+export const {addCookie} = authSlice.actions;
 
 

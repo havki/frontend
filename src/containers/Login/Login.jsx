@@ -13,6 +13,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useDispatch } from "react-redux";
 import { fetchLogin } from "../../store/reducers/auth.reducer";
+import { useCookies } from "react-cookie";
+import { foo, getCookie } from "../../helpers/cookie";
+import cookie from "cookie";
+import { addCookie } from "../../store/reducers/auth.reducer";
 
 function Copyright(props) {
   return (
@@ -37,23 +41,39 @@ export default function SignIn() {
     identifier: "",
     password: "",
   });
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const [cookies, setCookies] = useCookies(["user"]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    setCookies("user", JSON.stringify(user), {
+      path: "/",
+      maxAge: 3600,
+      sameSite: true,
+    });
+   
+  let data = cookie.parse(document.cookie);
+
+  if (Object.keys(data).length !== 0 && "user" in data) {
+    data = JSON.parse(data?.user);
+  }
+  dispatch(addCookie(data));
+  
     dispatch(fetchLogin(user));
     setUser({
       identifier: "",
       password: "",
-    })
+    });
   };
 
   const ChangeHandler = (e) => {
     setUser((user) => {
       return {
         ...user,
-        [e.target.name]: e.target.value
-      }
-    } );
+        [e.target.name]: e.target.value,
+      };
+    });
   };
 
   return (

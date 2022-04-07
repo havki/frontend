@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { createTheme,ThemeProvider } from '@mui/material/styles';
+import { CookiesProvider } from "react-cookie";
 
 
 const theme = createTheme({
@@ -31,6 +32,8 @@ const theme = createTheme({
 
 ReactDOM.render(
   <React.StrictMode>
+    <CookiesProvider>
+
     <Provider store={store}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
@@ -38,6 +41,7 @@ ReactDOM.render(
         </ThemeProvider>
       </BrowserRouter>
     </Provider>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
