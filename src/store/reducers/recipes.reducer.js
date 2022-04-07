@@ -76,9 +76,7 @@ export const recipesSlice = createSlice({
     addRecipe: (state, action) => {
       state.recipe = action.payload;
     },
-    filterCat: (state, action) => {
-      state.currentCat = action.payload;
-    },
+    
   },
   extraReducers: {
     [recipesFetch.pending]: (state) => {

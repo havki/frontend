@@ -38,7 +38,7 @@ function ResponsiveDrawer(props) {
   const filter = async (id) => {
 
   dispatch(recipesFetch(id)); 
-   dispatch(filterCat(id));
+ 
   }
 
   const {category} = useSelector((state)=> state.recipes)
