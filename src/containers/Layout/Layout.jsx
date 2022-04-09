@@ -1,4 +1,5 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 import ResponsiveAppBar from '../AppBar/Appbar'
 
 
@@ -9,8 +10,9 @@ function Layout() {
     <>
     
     <ResponsiveDrawer/>
-    {/* <ResponsiveAppBar/> */}
-   
+    {/* <ResponsiveAppBar/>
+    <Outlet/>
+    */}
     </>
   )
 }

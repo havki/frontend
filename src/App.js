@@ -11,6 +11,8 @@ import Recipes from "./containers/Recipes/Recipes";
 import { categoriesFetch } from "./store/reducers/recipes.reducer";
 import cookie from "cookie";
 import { addCookie } from "./store/reducers/auth.reducer";
+import RecipeReviewCard from "./containers/FoodCard/FoodCard";
+import AboutRecipe from "./containers/AboutRecipe/AboutRecipe";
 
 
 
@@ -30,6 +32,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="recipes" element={<Recipes />}/>
+
+          <Route path = "recipes/:id" element= {<AboutRecipe/>}/>
+          
           <Route path="login" element={<Login/>}/>
           <Route path="addrecipe" element={
             <ProtectedRoute user={user}>

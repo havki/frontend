@@ -28,7 +28,9 @@ function Recipes() {
     dispatch(recipesFetch(id)); 
    
     }
-
+   
+    
+ console.log(recipes);
   return (
     <>
       {loading === "loading" ? (
