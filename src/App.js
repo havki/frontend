@@ -20,6 +20,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(categoriesFetch());
+    dispatch(addCookie());
   }, [dispatch]);
   
   const{user}=useSelector((state)=> state.auth )
@@ -33,7 +34,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="recipes" element={<Recipes />}/>
 
-          <Route path = "recipes/:id" element= {<AboutRecipe/>}/>
+          <Route path = "recipe/:id" element= {<AboutRecipe/>}/>
           
           <Route path="login" element={<Login/>}/>
           <Route path="addrecipe" element={

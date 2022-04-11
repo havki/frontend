@@ -38,9 +38,13 @@ function ResponsiveDrawer(props) {
   const filter = async (id) => {
 
   dispatch(recipesFetch(id)); 
+  console.log(id);
  
   }
 
+  const foo = (id) => {
+    console.log(id);
+  }
   const {category} = useSelector((state)=> state.recipes)
   const {user} = useSelector((state)=> state.auth)
 
@@ -48,6 +52,18 @@ function ResponsiveDrawer(props) {
     <div>
       <Toolbar />
       <Divider />
+      <Divider />
+      <List>
+        {
+          
+          <ListItem button id={null} onClick={(e)=>filter(e.target.id)}  >
+            <ListItemIcon>
+               <InboxIcon /> 
+            </ListItemIcon>
+            <ListItemText primary= "Все блюда" />
+          </ListItem>
+        }
+      </List>
       <List>
         {category && category.map((text, index) => (
          
@@ -59,17 +75,6 @@ function ResponsiveDrawer(props) {
           </ListItem>
         ))}
       </List>
-      <Divider />
-      {/* <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List> */}
     </div>
   );
 

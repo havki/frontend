@@ -5,44 +5,54 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MediaCard({
-  category,
-  name,
-  author,
-  alias,
-  description,
-  text,
-  image
+  id,
+  attributes
+  // category,
+  // name,
+  // author,
+  // alias,
+  // description,
+  // text,
+  // image
 
 }) {
-let baseUrl= 'http://localhost:1337/'
-  // `http://localhost:1337/${image.data.attributes.url}`
-  
+  const navigate =useNavigate()
+  const LearnMore = () => {
+    const queryParams = id
+    navigate ({
+      pathname: '/recipe',
+      search: "?" + queryParams,
+    })
+  }
+
   
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         height="140"
-        image={image.data ? (`${ image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
+        image={attributes.image.data ? (`${ attributes.image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
         alt="green iguana"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {name}
+          {attributes.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {description}
+          {attributes.description}
         </Typography>
       </CardContent>
       <CardActions>
         
         <Button  size="small">Share</Button>
 
-      
-        <Button  size="small">Learn More</Button>
+        {/* <Link to = {`/recipes/:${id}`}>
+        </Link> */}
+
+        <Button onClick = {LearnMore} component={Link} to={`/recipe/${id}`} size="small">Learn More</Button>
       </CardActions>
     </Card>
   );

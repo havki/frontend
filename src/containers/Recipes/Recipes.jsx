@@ -30,7 +30,7 @@ function Recipes() {
     }
    
     
- console.log(recipes);
+ 
   return (
     <>
       {loading === "loading" ? (

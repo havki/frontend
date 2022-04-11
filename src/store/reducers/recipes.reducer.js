@@ -86,11 +86,20 @@ export const recipesSlice = createSlice({
     [recipesFetch.fulfilled]: (state, action) => {
       
       state.loading = "complete";
-      state.recipes = action.payload.data.attributes.reczepties.data.map((recipe) => {
-        let resp = recipe.attributes;
+      // console.log(action.payload.data);
+      if (Array.isArray(action.payload.data)){
         
-        return resp;
+        
+        let flatter = action.payload.data.map((pack)=>{
+        return pack.attributes.reczepties.data
       });
+      state.recipes = flatter.flat()
+        // console.log(prepared);
+      }
+      else{
+
+        state.recipes = action.payload.data.attributes.reczepties.data
+      }
     },
     [recipesFetch.rejected]: (state, action) => {
       state.loading = "error";

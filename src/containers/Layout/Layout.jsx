@@ -4,6 +4,7 @@ import ResponsiveAppBar from '../AppBar/Appbar'
 
 
 import ResponsiveDrawer from '../Drawer/Drawer'
+import StickyFooter from '../Footer/Footer'
 
 function Layout() {
   return (
@@ -12,7 +13,10 @@ function Layout() {
     <ResponsiveDrawer/>
     {/* <ResponsiveAppBar/>
     <Outlet/>
+
+
     */}
+    <StickyFooter/>
     </>
   )
 }

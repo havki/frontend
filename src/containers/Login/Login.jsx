@@ -53,12 +53,12 @@ export default function SignIn() {
       sameSite: true,
     });
    
-  let data = cookie.parse(document.cookie);
+  // let data = cookie.parse(document.cookie);
 
-  if (Object.keys(data).length !== 0 && "user" in data) {
-    data = JSON.parse(data?.user);
-  }
-  dispatch(addCookie(data));
+  // if (Object.keys(data).length !== 0 && "user" in data) {
+  //   data = JSON.parse(data?.user);
+  // }
+  // dispatch(addCookie(data));
   
     dispatch(fetchLogin(user));
     setUser({

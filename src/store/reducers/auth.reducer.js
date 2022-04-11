@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../api/axios.info";
+import cookie from "cookie";
 
 
 export const fetchLogin = createAsyncThunk(
@@ -25,8 +26,17 @@ export  const authSlice = createSlice({
     user:null,
   },
   reducers: {
-    addCookie: (state,action)=>{
-      state.user = action.payload
+    addCookie: (state)=>{
+      
+      let data = cookie.parse(document.cookie);
+
+      if (Object.keys(data).length !== 0 && "user" in data) {
+        data = JSON.parse(data?.user);
+      }
+      else{
+        data = null
+      }
+      state.user = data
     }
   },
   extraReducers: {
