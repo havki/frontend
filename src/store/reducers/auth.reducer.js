@@ -26,17 +26,20 @@ export  const authSlice = createSlice({
     user:null,
   },
   reducers: {
-    addCookie: (state)=>{
+    addCookie: (state,action)=>{
       
       let data = cookie.parse(document.cookie);
 
       if (Object.keys(data).length !== 0 && "user" in data) {
-        data = JSON.parse(data?.user);
+        data = JSON.parse(data?.user);// if data{user}
       }
       else{
         data = null
       }
       state.user = data
+    },
+    out: (state,action) => {
+      state.user= action.payload
     }
   },
   extraReducers: {
@@ -58,6 +61,6 @@ export  const authSlice = createSlice({
     }
   },
 });
-export const {addCookie} = authSlice.actions;
+export const {addCookie,out} = authSlice.actions;
 
 

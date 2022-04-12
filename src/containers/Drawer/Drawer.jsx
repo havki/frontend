@@ -22,31 +22,32 @@ import LoginIcon from '@mui/icons-material/Login';
 import { useDispatch, useSelector } from "react-redux";
 import { filterCat } from "../../store/reducers/recipes.reducer";
 import { recipesFetch } from "../../store/reducers/recipes.reducer";
-import { textAlign } from "@mui/system";
+import AvatarUser from "../AvatarUser/AvatarUser";
+
+
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const dispatch = useDispatch()
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const dispatch = useDispatch()
-
 
   const filter = async (id) => {
 
   dispatch(recipesFetch(id)); 
-  console.log(id);
+  
  
   }
 
-  const foo = (id) => {
-    console.log(id);
-  }
+
   const {category} = useSelector((state)=> state.recipes)
   const {user} = useSelector((state)=> state.auth)
+
+
+
 
   const drawer = (
     <div>
@@ -120,17 +121,25 @@ function ResponsiveDrawer(props) {
             >
               <SoupKitchenIcon /> All
             </NavLink>
-            <NavLink
-              style={{ textDecoration: "none", color: "white",marginLeft: "50px", }}
-              className={({ isActive }) =>
-                isActive ? "bg-green-500 font-bold" : "bg-red-500 font-thin"
-              }
-              to={"/login"}
-            >
-              <LoginIcon/> Log In
-            </NavLink>
+           
           </Typography>
+          {
+            user ? 
+            <AvatarUser/>
+            :
+            <NavLink
+            style={{ textDecoration: "none", color: "white",marginLeft: "50px", }}
+            className={({ isActive }) =>
+              isActive ? "bg-green-500 font-bold" : "bg-red-500 font-thin"
+            }
+            to={"/login"}
+          >
+            <LoginIcon/> Log In
+          </NavLink>
+          }
         </Toolbar>
+
+
       </AppBar>
       <Box
         component="nav"

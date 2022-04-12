@@ -62,7 +62,7 @@ function Recipes() {
           <Grid container spacing={2}>
             {recipes.map((recipe, index) => {
               return (
-                <Grid item key={index} xs={4} md={3} lg={2}>
+                <Grid item key={index} xs={12} sm={6} md={3} lg={2}>
                   <MediaCard {...recipe} />
                   
                 </Grid>

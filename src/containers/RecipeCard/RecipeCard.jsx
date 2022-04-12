@@ -25,6 +25,7 @@ export default function MediaCard({
     navigate ({
       pathname: '/recipe',
       search: "?" + queryParams,
+      
     })
   }
 
