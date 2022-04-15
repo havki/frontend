@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
@@ -13,8 +12,7 @@ import cookie from "cookie";
 import { addCookie } from "./store/reducers/auth.reducer";
 import RecipeReviewCard from "./containers/FoodCard/FoodCard";
 import AboutRecipe from "./containers/AboutRecipe/AboutRecipe";
-
-
+import MyPage from "./containers/MyPage/MyPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,27 +20,44 @@ function App() {
     dispatch(categoriesFetch());
     dispatch(addCookie());
   }, [dispatch]);
-  
-  const{user}=useSelector((state)=> state.auth )
 
-  
-
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="recipes" element={<Recipes />}/>
+          <Route path="recipes" element={<Recipes />} />
 
-          <Route path = "recipe/:id" element= {<AboutRecipe/>}/>
-          
-          <Route path="login" element={<Login/>}/>
-          <Route path="addrecipe" element={
+          <Route path="recipe/:id" element={<AboutRecipe />} />
+
+          <Route
+            path="recipe/edit/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <AboutRecipe edit/>
+              </ProtectedRoute>
+            }
+          />
+
+              
+           
+
+          <Route path="mypage" element={
             <ProtectedRoute user={user}>
-              <AddRecipe/>
-            </ProtectedRoute>
-          }/>
-          
+            <MyPage /> 
+          </ProtectedRoute>
+          } />
+          <Route path="login" element={<Login />} />
+
+          <Route
+            path="addrecipe"
+            element={
+              <ProtectedRoute user={user}>
+                <AddRecipe />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </div>

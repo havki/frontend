@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Avatar,
   IconButton,
@@ -12,9 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { out } from "../../store/reducers/auth.reducer";
 import { useCookies } from "react-cookie";
+import axios from "../../api/axios.info"
+import Loading from "../UI/Loading";
 
 function AvatarUser() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [userData,setUserData]=React.useState(null)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleOpenUserMenu = (event) => {
@@ -31,7 +34,7 @@ function AvatarUser() {
   const toHome = () => {
     setAnchorElUser(null)
     navigate ({
-      pathname: "login"
+      pathname: "mypage"
     })
   }
   const logOut = ()=> {
@@ -42,9 +45,24 @@ function AvatarUser() {
 
   }
 
+
+  useEffect(() => {
+    console.log(user);
+    const fetchData = async () => {
+      const response = await axios.get(`/profiles/${user.id}?populate=avatar`);
+      const res = response.data;
+      setUserData(res.data);
+
+   
+    };
+    fetchData().catch(console.error);
+
+  }, []);
   
-  
-  console.log(user);
+  if(!userData) {
+    return <Loading/>
+    
+  }
 
   return (
     <Box sx={{ flexGrow: 0 }}>
@@ -53,7 +71,7 @@ function AvatarUser() {
           {user ? (
             <Avatar
               alt="Remy Sharp"
-              src="https://cdn.icon-icons.com/icons2/2643/PNG/512/male_boy_person_people_avatar_icon_159358.png"
+              src={userData.attributes.avatar.data.attributes.url}
             />
           ) : (
             <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

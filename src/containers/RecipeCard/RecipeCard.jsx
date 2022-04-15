@@ -6,10 +6,13 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 export default function MediaCard({
   id,
-  attributes
+  attributes,
+  edit = false
   // category,
   // name,
   // author,
@@ -20,6 +23,7 @@ export default function MediaCard({
 
 }) {
   const navigate =useNavigate()
+  const user = useSelector((state)=> state.auth.user)
   const LearnMore = () => {
     const queryParams = id
     navigate ({
@@ -30,12 +34,13 @@ export default function MediaCard({
   }
 
   
+  
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         height="140"
-        image={attributes.image.data ? (`${ attributes.image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
+        // image={attributes.image.data ? (`${ attributes.image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
         alt="green iguana"
       />
       <CardContent>
@@ -52,8 +57,13 @@ export default function MediaCard({
 
         {/* <Link to = {`/recipes/:${id}`}>
         </Link> */}
+        {
+          user && edit ?
+          <Button onClick = {LearnMore} component={Link} to={`/recipe/edit/${id}`} size="small">Edit</Button>
+          :
 
         <Button onClick = {LearnMore} component={Link} to={`/recipe/${id}`} size="small">Learn More</Button>
+        }
       </CardActions>
     </Card>
   );

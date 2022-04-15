@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin } from "../../store/reducers/auth.reducer";
 import { useCookies } from "react-cookie";
 import { foo, getCookie } from "../../helpers/cookie";
@@ -42,16 +42,23 @@ export default function SignIn() {
     password: "",
   });
   const dispatch = useDispatch();
+  const userData =useSelector((state)=>state.auth.user)
   const [cookies, setCookies] = useCookies(["user"]);
+
+  React.useEffect(() => {
+    if(userData) {
+      setCookies("user", JSON.stringify(userData), {
+        path: "/",
+        maxAge: 3600,
+        sameSite: true,
+      });
+    }
+  }, [userData, setCookies])
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setCookies("user", JSON.stringify(user), {
-      path: "/",
-      maxAge: 3600,
-      sameSite: true,
-    });
+    
    
   // let data = cookie.parse(document.cookie);
 

@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import RecipeReviewCard from "../FoodCard/FoodCard";
 import Loading from "../UI/Loading";
 
-function AboutRecipe() {
+function AboutRecipe({edit = false}) {
   // const [id, setId] = useState()
   const [dish, setDish] = useState(null);
   const { recipes } = useSelector((state) => state.recipes);
@@ -19,15 +19,16 @@ function AboutRecipe() {
     //   console.log(entry[0]);
     //   info = parseInt(entry[0]);
     // }
-    console.log(id);
+    
    const fetchData = async () => {
-      const response = await axios.get(`/recipes/${id}?populate=image`)
+      const response = await axios.get(`/recipes/${id}?populate=*`)
       const res = response.data
       setDish(res.data)
     }
     fetchData().catch(console.error);;
   },[]);
  
+  
 
   //   useEffect(()=>{
 
@@ -49,7 +50,7 @@ function AboutRecipe() {
     <>{dish ?
     <div>
       <Box sx={{ display: "flex", justifyContent: "space-around" }}>
-        <RecipeReviewCard {...dish}/>
+        <RecipeReviewCard {...dish} edit={edit}/>
       </Box>
     </div>
 
