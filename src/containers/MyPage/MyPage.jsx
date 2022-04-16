@@ -53,7 +53,7 @@ function MyPage() {
             </Link>
           ))}
         </Toolbar>
-        <Typography variant="h3" gutterBottom coomponent= "div">
+        <Typography variant="h3" gutterBottom coomponent = "div">
             Добавленные
         </Typography>
         <Grid container spacing={2}>

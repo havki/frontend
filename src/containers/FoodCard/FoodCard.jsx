@@ -36,6 +36,8 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
 
   const [changedData, setChangedData] = React.useState({ ...attributes });
 
+  const [text, setText] = React.useState("");
+
   const user = useSelector((state) => state.auth.user);
 
   React.useEffect(() => {
@@ -51,7 +53,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
 
   let button = null;
 
-  if (user && "token" in user ) {
+  if (user && "token" in user) {
     const putData = async () => {
       await axios.put(
         `/recipes/${id}`,
@@ -70,7 +72,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
     );
   }
 
-  console.log(attributes);
+  console.log(changedData);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -78,9 +80,9 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
 
   const changeHandler = (e) => {
     setChangedData((changedData) => {
+      console.log(e.target.id);
       return {
-        ...changedData,
-        [e.target.name]: e.target.value,
+        [e.target.id]: e.target.innerText,
       };
     });
   };
@@ -110,7 +112,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={attributes.name}
+        title={edit ?  attributes.name : changedData.name}
         subheader={`Дата публикации: ${attributes.publishedAt.substr(0, 10)}`}
       />
       <CardMedia
@@ -125,15 +127,17 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
       />
       <CardContent>
         {edit ? (
-          <TextField
-            sx={{ width: "300px" }}
-            onChange={changeHandler}
-            name="description"
-            label="Название "
-            id="outlined-basic"
-            multiline
-            value={changedData.description}
-          />
+          <Typography
+            variant="body2"
+            suppressContentEditableWarning
+            contentEditable
+            onInput={changeHandler}
+            color="text.secondary"
+            innerText={changedData.description}
+            id="description"
+          >
+            {attributes.description}
+          </Typography>
         ) : (
           <Typography variant="body2" color="text.secondary">
             {attributes.description}
@@ -141,7 +145,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
         )}
       </CardContent>
       <CardActions disableSpacing>
-        {(edit &&  Object.keys(changedData).length) && button}
+        {edit && Object.keys(changedData).length && button}
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
@@ -158,15 +162,16 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
         <CardContent>
           <Typography paragraph>Method:</Typography>
           {edit ? (
-            <TextField
-              sx={{ maxWidth: "500px" }}
-              onChange={changeHandler}
-              name="text"
-              label="Название "
-              id="outlined-basic"
-              multiline
-              value={changedData.text}
-            />
+            <Typography
+              paragraph
+              suppressContentEditableWarning
+              contentEditable
+              onInput={changeHandler}
+              innerText={changedData.description}
+              id="text"
+            >
+              {changedData.text}
+            </Typography>
           ) : (
             <Typography paragraph>{attributes.text}</Typography>
           )}
@@ -175,3 +180,13 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
     </Card>
   );
 }
+
+// <TextField
+//   sx={{ width: "300px" }}
+//   onChange={changeHandler}
+//   name="description"
+//   label="Название "
+//   id="outlined-basic"
+//   multiline
+//   value={changedData.description}
+// />
