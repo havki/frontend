@@ -30,16 +30,13 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RecipeReviewCard({ id, attributes,edit }) {
+export default function RecipeReviewCard({ id, attributes, edit }) {
   const [expanded, setExpanded] = React.useState(false);
   const [userData, setUserData] = React.useState(null);
 
+  const [changedData, setChangedData] = React.useState({ ...attributes });
 
-  const [changedData, setChangedData] = React.useState({...attributes})
-
-
-  
-  const token = useSelector((state => state.auth.user.token))
+  const user = useSelector((state) => state.auth.user);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -50,15 +47,27 @@ export default function RecipeReviewCard({ id, attributes,edit }) {
       setUserData(res.data);
     };
     fetchData().catch(console.error);
-
   }, []);
-  
-  const putData = async()=> {
-    await axios.put(`/recipes/${id}`, {data:changedData}, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    });
+
+  let button = null;
+
+  if (user && "token" in user ) {
+    const putData = async () => {
+      await axios.put(
+        `/recipes/${id}`,
+        { data: changedData },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+    };
+    button = (
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon onClick={putData} />
+      </IconButton>
+    );
   }
 
   console.log(attributes);
@@ -68,14 +77,13 @@ export default function RecipeReviewCard({ id, attributes,edit }) {
   };
 
   const changeHandler = (e) => {
-  setChangedData(changedData => {
-    return {
-      ...changedData,
-      [e.target.name]: e.target.value
-    }
-  })
-};
- 
+    setChangedData((changedData) => {
+      return {
+        ...changedData,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
 
   if (!userData) {
     return <Loading />;
@@ -102,47 +110,38 @@ export default function RecipeReviewCard({ id, attributes,edit }) {
             <MoreVertIcon />
           </IconButton>
         }
-        
         title={attributes.name}
         subheader={`Дата публикации: ${attributes.publishedAt.substr(0, 10)}`}
       />
       <CardMedia
         component="img"
         height="194"
-        image={attributes.image.data ? (`${ attributes.image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
-
-        
-
+        image={
+          attributes.image.data
+            ? `${attributes.image.data.attributes.url}`
+            : "https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png"
+        }
         alt="Paella dish"
       />
       <CardContent>
-        {
-          edit ? 
+        {edit ? (
           <TextField
-              sx={{width:'300px'}}
-              onChange={changeHandler}
-              name="description"
-              label="Название "
-              id="outlined-basic"
-              multiline
-              value={changedData.description}
-            />
-          :
-        <Typography variant="body2"  color="text.secondary"  >
-          {attributes.description}
-        </Typography>
-        }
+            sx={{ width: "300px" }}
+            onChange={changeHandler}
+            name="description"
+            label="Название "
+            id="outlined-basic"
+            multiline
+            value={changedData.description}
+          />
+        ) : (
+          <Typography variant="body2" color="text.secondary">
+            {attributes.description}
+          </Typography>
+        )}
       </CardContent>
       <CardActions disableSpacing>
-        {
-          (edit && Object.keys(changedData ).length) && (
-
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon onClick = {putData} />
-        </IconButton>
-          )
-
-        }
+        {(edit &&  Object.keys(changedData).length) && button}
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
@@ -158,21 +157,19 @@ export default function RecipeReviewCard({ id, attributes,edit }) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Method:</Typography>
-          {
-            edit ? 
+          {edit ? (
             <TextField
-            sx={{maxWidth:'500px'}}
-            onChange={changeHandler}
-            name="text"
-            label="Название "
-            id="outlined-basic"
-            multiline
-            value={changedData.text}
-          />
-
-            :
-          <Typography paragraph>{attributes.text}</Typography>
-          }
+              sx={{ maxWidth: "500px" }}
+              onChange={changeHandler}
+              name="text"
+              label="Название "
+              id="outlined-basic"
+              multiline
+              value={changedData.text}
+            />
+          ) : (
+            <Typography paragraph>{attributes.text}</Typography>
+          )}
         </CardContent>
       </Collapse>
     </Card>

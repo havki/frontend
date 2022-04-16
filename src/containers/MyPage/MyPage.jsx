@@ -60,7 +60,7 @@ function MyPage() {
           
           {userData.attributes.reczepties.data.map((recipe, index) => {
             return (
-              <Grid item key={index} xs={12} sm={6} md={3} lg={2}>
+              <Grid item key={recipe.id} xs={12} sm={6} md={3} lg={2}>
                 <MediaCard {...recipe} edit />
               </Grid>
             );
