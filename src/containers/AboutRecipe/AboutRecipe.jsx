@@ -1,19 +1,25 @@
 import { Box } from "@mui/material";
 import axios from "../../api/axios.info";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useSearchParams } from "react-router-dom";
 import RecipeReviewCard from "../FoodCard/FoodCard";
 import Loading from "../UI/Loading";
+import { profileFetch } from "../../store/reducers/profile.reducer";
 
 function AboutRecipe({edit = false}) {
   // const [id, setId] = useState()
   const [dish, setDish] = useState(null);
   const { recipes } = useSelector((state) => state.recipes);
+  const { userData } = useSelector((state) => state.profile);
   
   const {id} = useParams();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
+
+    
     // let info = 0;
     // for (let entry of query.entries()) {
     //   console.log(entry[0]);
@@ -25,7 +31,9 @@ function AboutRecipe({edit = false}) {
       const res = response.data
       setDish(res.data)
     }
-    fetchData().catch(console.error);;
+    fetchData().catch(console.error);
+
+    
   },[]);
  
   

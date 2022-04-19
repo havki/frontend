@@ -1,8 +1,9 @@
 import { Grid, Link, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "../../api/axios.info";
+import { clearDeleted } from "../../store/reducers/profile.reducer";
 import MediaCard from "../RecipeCard/RecipeCard";
 import Loading from "../UI/Loading";
 
@@ -11,8 +12,10 @@ function MyPage() {
  
 
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(clearDeleted())
     const fetchData = async () => {
       const response = await axios.get(`/profiles/${user.id}?populate=*`);
       const res = response.data;
@@ -24,7 +27,7 @@ function MyPage() {
 
   }, []);
 
- 
+  console.log(userData);
 
   if (!userData){
     return <Loading/>
@@ -32,7 +35,7 @@ function MyPage() {
 
   return  (
     <>
-    
+
       <Box sx={{ flexGrow: 1 }}>
         <Toolbar
           component="nav"

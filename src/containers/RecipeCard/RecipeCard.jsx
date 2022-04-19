@@ -6,7 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { recipeDel } from "../../store/reducers/profile.reducer";
 
 
 export default function MediaCard({
@@ -24,6 +25,7 @@ export default function MediaCard({
 }) {
   const navigate =useNavigate()
   const user = useSelector((state)=> state.auth.user)
+  const dispatch = useDispatch()
   const LearnMore = () => {
     const queryParams = id
     navigate ({
@@ -34,32 +36,37 @@ export default function MediaCard({
   }
 
   
-  
+ 
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
+       {
+          !edit &&
+          <CardMedia
         component="img"
         height="140"
-        // image={attributes.image.data ? (`${ attributes.image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
+        image={attributes.image.data ? (`${ attributes.image.data.attributes.url}`) : ("https://xn--90aha1bhcc.xn--p1ai/img/placeholder.png")}
         alt="green iguana"
       />
+          
+        }
+     
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {attributes.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        {!edit && <Typography variant="body2" color="text.secondary">
           {attributes.description}
-        </Typography>
+        </Typography>}
       </CardContent>
-      <CardActions>
-        
-        <Button  size="small">Share</Button>
 
-        {/* <Link to = {`/recipes/:${id}`}>
-        </Link> */}
+      <CardActions sx={{display:"flex",justifyContent: 'center'}}>
+        
+        <Button onClick={() => dispatch(recipeDel(id))} size="small">Delete</Button>
+
+        
         {
           user && edit ?
-          <Button onClick = {LearnMore} component={Link} to={`/recipe/edit/${id}`} size="small">Edit</Button>
+          <Button  onClick = {LearnMore} component={Link}  to={`/recipe/edit/${id}`} size="small">Edit</Button>
           :
 
         <Button onClick = {LearnMore} component={Link} to={`/recipe/${id}`} size="small">Learn More</Button>

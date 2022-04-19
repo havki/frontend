@@ -40,14 +40,13 @@ function AvatarUser() {
   const logOut = ()=> {
     setAnchorElUser(null)
     dispatch(out(null))
-    console.log(document.cookie);
     removeCookie('user')
 
   }
 
 
   useEffect(() => {
-    console.log(user);
+    
     const fetchData = async () => {
       const response = await axios.get(`/profiles/${user.id}?populate=avatar`);
       const res = response.data;

@@ -14,8 +14,10 @@ import {
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { recipesFetch } from "../../store/reducers/recipes.reducer";
+import { clearDeleted } from "../../store/reducers/profile.reducer";
 import MediaCard from "../RecipeCard/RecipeCard";
 import Loading from "../UI/Loading";
+
 
 function Recipes() {
   const dispatch = useDispatch();
@@ -23,7 +25,10 @@ function Recipes() {
 
   const filter = async (id) => {
     dispatch(recipesFetch(id));
+
   };
+
+ 
 
   return (
     <>
@@ -53,7 +58,7 @@ function Recipes() {
           <Grid container spacing={2}>
             {recipes.map((recipe, index) => {
               return (
-                <Grid item key={index} xs={12} sm={6} md={3} lg={2}>
+                <Grid item key={recipe.id} xs={12} sm={6} md={3} lg={2}>
                   <MediaCard {...recipe} />
                 </Grid>
               );

@@ -17,7 +17,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "../../api/axios.info";
 import Loading from "../UI/Loading";
 import { TextField } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import SendIcon from "@mui/icons-material/Send";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { profileFetch, recipeDel, recipePut } from "../../store/reducers/profile.reducer";
+import BasicModal from "../UI/ModalWindow/ModalWindow";
+import Recipes from "../Recipes/Recipes";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,48 +37,59 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeReviewCard({ id, attributes, edit }) {
-  const [expanded, setExpanded] = React.useState(false);
-  const [userData, setUserData] = React.useState(null);
+  const [expanded, setExpanded] = React.useState(true);
+  // const [userData, setUserData] = React.useState(null);
+  
 
-  const [changedData, setChangedData] = React.useState({ ...attributes });
+  const [changedData, setChangedData] = React.useState({...attributes});
+  const [confirm ,setConfirm ] = React.useState(false);
 
-  const [text, setText] = React.useState("");
+
+  const dispatch = useDispatch()
+
+  const navigate = useNavigate()
+
 
   const user = useSelector((state) => state.auth.user);
+  const {deleted,loading,userData} = useSelector((state) => state.profile);
+  
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `/profiles/${attributes.user.data.id}?populate=*`
-      );
-      const res = response.data;
-      setUserData(res.data);
-    };
-    fetchData().catch(console.error);
-  }, []);
+  React.useEffect(() =>{ 
+    dispatch(profileFetch(attributes.user.data.id))
+  },[]);
+  
+  console.log(changedData);
 
   let button = null;
+  let delButton = null;
 
   if (user && "token" in user) {
+    
     const putData = async () => {
-      await axios.put(
-        `/recipes/${id}`,
-        { data: changedData },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      dispatch(recipePut({ id,data: changedData }))
+      
+    };
+   
+    const delData = async () => {
+      setConfirm(true)
+     
+     
+      
     };
     button = (
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon onClick={putData} />
+      <IconButton aria-label="add to favorites" onClick={putData}>
+        <SendIcon />
+      </IconButton>
+    );
+
+    delButton = (
+      <IconButton aria-label="share" onClick={delData}>
+        <DeleteIcon/>
       </IconButton>
     );
   }
 
-  console.log(changedData);
+  
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -80,8 +97,8 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
 
   const changeHandler = (e) => {
     setChangedData((changedData) => {
-      console.log(e.target.id);
       return {
+     
         [e.target.id]: e.target.innerText,
       };
     });
@@ -91,7 +108,19 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
     return <Loading />;
   }
 
+  
+
+ if (deleted === 'complete') {
+  navigate("/mypage")
+ }
+
+ 
+
   return (
+    <>
+   {
+     confirm && <BasicModal closed={setConfirm} id={id}/>
+   }
     <Card sx={{ maxWidth: 800 }}>
       <CardHeader
         avatar={
@@ -112,7 +141,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={edit ?  attributes.name : changedData.name}
+        title={edit ? attributes.name : changedData.name}
         subheader={`Дата публикации: ${attributes.publishedAt.substr(0, 10)}`}
       />
       <CardMedia
@@ -146,17 +175,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
       </CardContent>
       <CardActions disableSpacing>
         {edit && Object.keys(changedData).length && button}
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
+        {edit && delButton}
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
@@ -167,7 +186,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
               suppressContentEditableWarning
               contentEditable
               onInput={changeHandler}
-              innerText={changedData.description}
+              innerText={changedData.text}
               id="text"
             >
               {changedData.text}
@@ -178,15 +197,32 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
         </CardContent>
       </Collapse>
     </Card>
+    </>
   );
 }
 
-// <TextField
-//   sx={{ width: "300px" }}
-//   onChange={changeHandler}
-//   name="description"
-//   label="Название "
-//   id="outlined-basic"
-//   multiline
-//   value={changedData.description}
-// />
+ // await axios.put(
+    //   `/recipes/${id}`,
+    //   { data: changedData },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${user.token}`,
+    //     },
+    //   }
+    // );
+
+     //   const fetchData = async () => {
+  //     const response = await axios.get(
+  //       `/profiles/${attributes.user.data.id}?populate=*`
+  //     );
+  //     const res = response.data;
+  //     setUserData(res.data);
+  //   };
+  //   fetchData().catch(console.error);
+  // }, []);
+
+   // await axios.delete(`/recipes/${id}`,{
+      //   headers: {
+      //     Authorization: `Bearer ${user.token}`,
+      //   },
+      // });
