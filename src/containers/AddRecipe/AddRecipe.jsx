@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+
   MenuItem,
   Stack,
   TextField,
@@ -16,6 +17,9 @@ import {
   categoriesFetch,
 } from "../../store/reducers/recipes.reducer";
 import Loading from "../UI/Loading";
+
+
+
 
 function AddRecipe() {
   const [recipe, setRecipe] = useState({});
@@ -73,16 +77,18 @@ function AddRecipe() {
         <Loading />
       ) : (
         <Box
+          
           sx={{
             mt: 5,
             component: "form",
             display: "flex",
-            flexDirection: "row",
+            
+            alignItems: "center",
             justifyContent: "space-around",
             xs: { flexDirection: "column" },
           }}
         >
-          <Stack direction="column" spacing={2} sx={{ width: "30%" }}>
+          <Stack direction="column" mt={3} spacing={2} sx={{ width: "100%" }}>
             <TextField
               id="outlined-select-currency"
               select
@@ -118,7 +124,7 @@ function AddRecipe() {
             />
           </Stack>
 
-          <Stack direction="column" spacing={2} sx={{ width: "50%" }}>
+          <Stack   direction="column" mt = {2} spacing={2} sx={{ width: "100%" }} >
             <TextField
               onChange={changeHandler}
               name="alias"

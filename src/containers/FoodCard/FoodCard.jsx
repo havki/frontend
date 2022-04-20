@@ -58,7 +58,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
     dispatch(profileFetch(attributes.user.data.id))
   },[]);
   
-  console.log(changedData);
+  
 
   let button = null;
   let delButton = null;
