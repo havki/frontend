@@ -35,7 +35,7 @@ function Recipes() {
       {loading === "loading" ? (
         <Loading />
       ) : (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{  flexGrow: 1 }} >
           <Toolbar
             component="nav"
             variant="dense"
@@ -59,7 +59,7 @@ function Recipes() {
             {recipes.map((recipe, index) => {
               return (
                 <Grid item key={recipe.id} xs={12} sm={6} md={3} lg={2}>
-                  <MediaCard {...recipe} />
+                  <MediaCard   {...recipe} />
                 </Grid>
               );
             })}

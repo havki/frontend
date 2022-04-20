@@ -38,7 +38,7 @@ export default function MediaCard({
   
  
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, m:'0 auto' }} >
        {
           !edit &&
           <CardMedia

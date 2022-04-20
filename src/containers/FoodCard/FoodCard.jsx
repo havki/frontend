@@ -40,8 +40,9 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
   const [expanded, setExpanded] = React.useState(true);
   // const [userData, setUserData] = React.useState(null);
   
-
-  const [changedData, setChangedData] = React.useState({...attributes});
+ 
+  const [changedData, setChangedData] = React.useState({});
+  const [updateData, setUpdateData] = React.useState({});
   const [confirm ,setConfirm ] = React.useState(false);
 
 
@@ -55,10 +56,14 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
   
 
   React.useEffect(() =>{ 
-    dispatch(profileFetch(attributes.user.data.id))
+  console.log(attributes);
+    dispatch(profileFetch(attributes.user.data?.id))
   },[]);
+  React.useEffect(() =>{ 
+    setChangedData(attributes)
+  },[attributes]);
   
-  
+  console.log(updateData);
 
   let button = null;
   let delButton = null;
@@ -66,7 +71,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
   if (user && "token" in user) {
     
     const putData = async () => {
-      dispatch(recipePut({ id,data: changedData }))
+      dispatch(recipePut({ id,data: updateData}))
       
     };
    
@@ -98,10 +103,16 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
   const changeHandler = (e) => {
     setChangedData((changedData) => {
       return {
-     
+        ...changedData,
         [e.target.id]: e.target.innerText,
       };
     });
+    setUpdateData((update) => {
+      return {
+        ...update,
+        [e.target.id]: e.target.innerText,
+      };
+    })
   };
 
   if (!userData) {
@@ -114,6 +125,7 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
   navigate("/mypage")
  }
 
+ 
  
 
   return (
@@ -181,18 +193,19 @@ export default function RecipeReviewCard({ id, attributes, edit }) {
         <CardContent>
           <Typography paragraph>Method:</Typography>
           {edit ? (
+            
             <Typography
               paragraph
               suppressContentEditableWarning
               contentEditable
               onInput={changeHandler}
-              innerText={changedData.text}
-              id="text"
+              innerText={changedData.fulldescription}
+              id="fulldescription"
             >
-              {changedData.text}
+              {changedData.fulldescription}
             </Typography>
           ) : (
-            <Typography paragraph>{attributes.text}</Typography>
+            <Typography paragraph>{attributes.fulldescription}</Typography>
           )}
         </CardContent>
       </Collapse>

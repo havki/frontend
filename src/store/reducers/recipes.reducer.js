@@ -6,6 +6,7 @@ export const recipesPost = createAsyncThunk(
   async (order, { rejectWithValue,getState }) => {
     try {
       let token =  getState().auth.user.token
+      console.log(order);
       await axios.post("/recipes", order, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -56,6 +57,7 @@ export const recipesSlice = createSlice({
   initialState: {
     recipes: [],
     loading: "",
+    recipeSended: "",
     category: [
       
     ],
@@ -65,7 +67,7 @@ export const recipesSlice = createSlice({
       author: "Гордон Рамзи",
       alias: "sup",
       description: "Lorem ipsum dolor sit amet.",
-      text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos libero neque, iure adipisci nobis soluta quisquam nihil, similique corrupti nemo ab impedit minima nostrum, aut et reprehenderit incidunt maiores? Dolores?",
+      fulldescription: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quos libero neque, iure adipisci nobis soluta quisquam nihil, similique corrupti nemo ab impedit minima nostrum, aut et reprehenderit incidunt maiores? Dolores?",
     },
     // currentCat: '',
   },
@@ -108,12 +110,15 @@ export const recipesSlice = createSlice({
 
     [recipesPost.pending]: (state) => {
       state.loading = "loading";
+      state.recipeSended = "loading";
     },
     [recipesPost.fulfilled]: (state) => {
       state.loading = "complete";
+      state.recipeSended  =  "complete"
     },
     [recipesPost.rejected]: (state) => {
       state.loading = "loading";
+      state.recipeSended  =  "error"
     },
 
     [categoriesFetch.pending]: (state) => {

@@ -109,7 +109,7 @@ function ResponsiveDrawer(props) {
               className="link"
               to={"/addrecipe"}
             >
-             <AddBoxIcon/> Add
+             <AddBoxIcon/> Добавить
             </NavLink>
             }
             <NavLink
@@ -119,7 +119,7 @@ function ResponsiveDrawer(props) {
               }
               to={"/recipes"}
             >
-              <SoupKitchenIcon /> All
+              <SoupKitchenIcon /> Все рецепты
             </NavLink>
            
           </Typography>
@@ -134,7 +134,7 @@ function ResponsiveDrawer(props) {
             }
             to={"/login"}
           >
-            <LoginIcon/> Log In
+            <LoginIcon/> Войти
           </NavLink>
           }
         </Toolbar>
