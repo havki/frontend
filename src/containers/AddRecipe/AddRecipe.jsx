@@ -26,18 +26,19 @@ function AddRecipe() {
   const dispatch = useDispatch();
   const { loading, category ,recipeSended} = useSelector((state) => state.recipes);
   const token = useSelector((state) => state.auth.user.token);
-  const {id} = useSelector((state) => state.auth.user);
+  const {id,username} = useSelector((state) => state.auth.user);
   const [uploading, setUploading] = useState(false) 
 
   const changeHandler = (e) => {
     setRecipe((recipe) => {
       return {
         ...recipe,
+        author: username,
         [e.target.name]: e.target.value,
       };
     });
   };
-  
+  console.log(recipe);
   
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -51,7 +52,7 @@ function AddRecipe() {
     axios
       .post("/upload", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", //&&&&&&&&&&&&????????????????
+          "Content-Type": "multipart/form-data", 
           Authorization: `Bearer ${token}`,
         },
       })
@@ -60,7 +61,8 @@ function AddRecipe() {
           data: {
             ...recipe,
             image: res.data,
-            user: { id: id }
+            user: { id: id },
+            profile: {id: id}
           },
         };
         dispatch(recipesPost(obj));
@@ -113,12 +115,12 @@ function AddRecipe() {
                 label="Название "
                 id="outlined-basic"
               />
-              <TextField
+              {/* <TextField
                 onChange={changeHandler}
                 name="author"
                 label="Автор "
                 id="outlined-basic"
-              />
+              /> */}
               <TextField
                 onChange={changeHandler}
                 name="description"
@@ -132,12 +134,12 @@ function AddRecipe() {
 
             
             <Stack direction="column" mt={2} spacing={2} sx={{ width: "100%" }}>
-              <TextField
+              {/* <TextField
                 onChange={changeHandler}
                 name="alias"
                 label="alias "
                 id="outlined-basic"
-              />
+              /> */}
               <TextField
                 onChange={fileHandler}
                 name="file"

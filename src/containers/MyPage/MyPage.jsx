@@ -1,5 +1,6 @@
 import { Grid, Link, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { isFulfilled } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../api/axios.info";
@@ -26,7 +27,6 @@ function MyPage() {
     fetchData().catch(console.error);
 
   }, []);
-
   console.log(userData);
 
   if (!userData){
@@ -35,30 +35,24 @@ function MyPage() {
 
   return  (
     <>
-
-      <Box sx={{ flexGrow: 1 }}>
-        <Toolbar
-          component="nav"
-          variant="dense"
-          sx={{ justifyContent: "space-between", overflowX: "auto" }}
-        >
-          {["3","2","1"].map((category) => (
-            <Link
-              color="inherit"
-              noWrap
-              key={category.id}
-              variant="body2"
-              // href={category.url}
-              sx={{ p: 1, flexShrink: 0 }}
-              // onClick={() => filter(category.id)}
-            >
-              {/* {category.attributes.title} */}
-            </Link>
-          ))}
-        </Toolbar>
-        <Typography variant="h3" gutterBottom coomponent = "div">
-            Добавленные
+     <Typography variant="h4" gutterBottom coomponent = "div">
+            Мой профиль
         </Typography>
+      <Typography variant="h6" color="text.secondary">
+          Город: {userData.attributes.country}
+        </Typography>
+        <Typography variant="h6" color="text.secondary">
+          Юзернейм: {user.username}
+        </Typography>
+        <Typography variant="h6" color="text.secondary">
+          Дата регистрации: {userData.attributes.publishedAt.substr(0, 10)}
+        </Typography>
+      <Box sx={{ flexGrow: 1 }}>
+       
+        <Typography variant="h5" gutterBottom coomponent = "div">
+            Добавленные {userData.attributes.reczepties.data.length}
+        </Typography>
+       
         <Grid container spacing={2}>
           
           {userData.attributes.reczepties.data.map((recipe, index) => {
@@ -76,3 +70,25 @@ function MyPage() {
 }
 
 export default MyPage;
+
+
+
+// {/* <Toolbar
+// component="nav"
+// variant="dense"
+// sx={{ justifyContent: "space-between", overflowX: "auto" }}
+// >
+// {["3","2","1"].map((category) => (
+//   <Link
+//     color="inherit"
+//     noWrap
+//     key={category.id}
+//     variant="body2"
+//     // href={category.url}
+//     sx={{ p: 1, flexShrink: 0 }}
+//     // onClick={() => filter(category.id)}
+//   >
+//     {/* {category.attributes.title} */}
+// //   </Link>
+// // ))}
+// // </Toolbar> */}

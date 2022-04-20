@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { filterCat } from "../../store/reducers/recipes.reducer";
 import { recipesFetch } from "../../store/reducers/recipes.reducer";
 import AvatarUser from "../AvatarUser/AvatarUser";
+import WovenImageList from "../Gallery/Gallery";
 
 
 const drawerWidth = 240;
@@ -188,6 +189,7 @@ function ResponsiveDrawer(props) {
         }}
       >
         <Toolbar />
+       
         <Outlet />
       </Box>
     </Box>

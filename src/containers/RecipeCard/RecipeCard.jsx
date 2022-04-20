@@ -51,7 +51,7 @@ export default function MediaCard({
         }
      
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h8" component="div">
           {attributes.name}
         </Typography>
         {!edit && <Typography variant="body2" color="text.secondary">
@@ -61,7 +61,7 @@ export default function MediaCard({
 
       <CardActions sx={{display:"flex",justifyContent: 'center'}}>
         
-        <Button onClick={() => dispatch(recipeDel(id))} size="small">Delete</Button>
+       
 
         
         {

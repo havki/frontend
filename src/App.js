@@ -13,6 +13,7 @@ import { addCookie } from "./store/reducers/auth.reducer";
 import RecipeReviewCard from "./containers/FoodCard/FoodCard";
 import AboutRecipe from "./containers/AboutRecipe/AboutRecipe";
 import MyPage from "./containers/MyPage/MyPage";
+import WovenImageList from "./containers/Gallery/Gallery";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
+        <Route path="/" element={<WovenImageList/>} />
           <Route path="recipes" element={<Recipes />} />
 
           <Route path="recipe/:id" element={<AboutRecipe />} />
